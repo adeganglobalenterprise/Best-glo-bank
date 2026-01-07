@@ -1,0 +1,12 @@
+total 56
+drwxr-xr-x 7 root root 4096 Dec 31 23:19 .
+drwxr-xr-x 4 user user 4096 Dec 31 23:07 ..
+-rw-r--r-- 1 root root 1453 Dec 31 23:07 .env.example
+-rw-r--r-- 1 root root 8803 Dec 31 23:19 README.md
+drwxr-xr-x 2 root root 4096 Dec 31 23:08 config
+drwxr-xr-x 2 root root 4096 Dec 31 23:10 middleware
+drwxr-xr-x 2 root root 4096 Dec 31 23:09 models
+-rw-r--r-- 1 root root 1375 Dec 31 23:07 package.json
+drwxr-xr-x 2 root root 4096 Dec 31 23:17 routes
+-rw-r--r-- 1 root root 5640 Dec 31 23:07 server.js
+drwxr-xr-x 2 root root 4096 Dec 31 23:18 services

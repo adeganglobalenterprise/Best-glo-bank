@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Banking & Crypto App</title>
+    <link rel="stylesheet" href="styles.css">
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body>
+    <!-- Notification Container -->
+    <div id="notificationContainer" style="position: fixed; top: 20px; right: 20px; z-index: 9999; max-width: 400px;"></div>
+
+    <!-- Login Page -->
+    <div id="loginPage" class="login-page">
+        <div class="container">
+            <!-- Customer Login -->
+            <div class="login-container" style="margin-bottom: 30px;">
+                <h1>🏦 Global Banking</h1>
+                <form id="customerLoginForm">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" id="customerUsername" required placeholder="Enter your username">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="customerPassword" required placeholder="Enter your password">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Customer Login</button>
+                </form>
+            </div>
+            
+            <!-- Admin Login -->
+            <div class="login-container">
+                <h1>🔐 Admin Portal</h1>
+                <form id="adminLoginForm">
+                    <div class="form-group">
+                        <label>Admin Username</label>
+                        <input type="text" id="adminUsername" required placeholder="Enter admin username">
+                    </div>
+                    <div class="form-group">
+                        <label>Admin Password</label>
+                        <input type="password" id="adminPassword" required placeholder="Enter admin password">
+                    </div>
+                    <button type="submit" class="btn btn-warning" style="width: 100%;">Admin Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboard" class="hidden">
+        <header>
+            <div class="logo">🏦 Global Banking</div>
+            <div class="user-info">
+                <div style="text-align: right;">
+                    <div id="userName" style="font-weight: bold;">Welcome</div>
+                    <small id="userRole" style="color: #64748b;">Customer</small>
+                </div>
+                <img id="userAvatar" src="" alt="User Avatar" class="user-avatar">
+                <button onclick="logout()" class="btn btn-danger" style="padding: 8px 15px;">Logout</button>
+            </div>
+        </header>
+
+        <div class="container">
+            <!-- Navigation -->
+            <nav style="margin: 30px 0;">
+                <button onclick="showSection('dashboard-main')" class="active">📊 Dashboard</button>
+                <button onclick="showSection('transactions')">💸 Transactions</button>
+                <button onclick="showSection('crypto-wallets')">₿ Crypto Wallets</button>
+                <button onclick="showSection('mining')">⛏️ Mining</button>
+                <button onclick="showSection('trading')">📈 Trading</button>
+                <button onclick="showSection('profile')">👤 Profile</button>
+                <button onclick="showSection('admin')" id="adminNavBtn" style="display: none;">🔧 Admin</button>
+            </nav>
+
+            <main>
+                <!-- Dashboard Main Section -->
+                <div id="dashboard-main" class="section active">
+                    <!-- Balance Board -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">💰 Balance Board</h2>
+                            <p class="text-muted">Click on any balance to edit</p>
+                        </div>
+                        <div class="balance-grid">
+                            <div class="balance-card" onclick="editBalance('USD')">
+                                <div class="currency-symbol">$</div>
+                                <div class="balance-amount" id="balance-USD">0.00</div>
+                                <div class="currency-name">US Dollar</div>
+                            </div>
+                            <div class="balance-card" onclick="editBalance('EUR')">
+                                <div class="currency-symbol">€</div>
+                                <div class="balance-amount" id="balance-EUR">0.00</div>
+                                <div class="currency-name">Euro</div>
+                            </div>
+                            <div class="balance-card" onclick="editBalance('GBP')">
+                                <div class="currency-symbol">£</div>
+                                <div class="balance-amount" id="balance-GBP">0.00</div>
+                                <div class="currency-name">British Pound</div>
+                            </div>
+                            <div class="balance-card" onclick="editBalance('CNY')">
+                                <div class="currency-symbol">¥</div>
+                                <div class="balance-amount" id="balance-CNY">0.00</div>
+                                <div class="currency-name">Chinese Yuan</div>
+                            </div>
+                            <div class="balance-card" onclick="editBalance('NGN')">
+                                <div class="currency-symbol">₦</div>
+                                <div class="balance-amount" id="balance-NGN">0.00</div>
+                                <div class="currency-name">Nigerian Naira</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Crypto Balances -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">₿ Crypto Balances</h2>
+                        </div>
+                        <div class="balance-grid">
+                            <div class="balance-card" style="background: linear-gradient(135deg, #f7931a 0%, #c47500 100%);" onclick="editBalance('BTC')">
+                                <div class="currency-symbol">₿</div>
+                                <div class="balance-amount" id="balance-BTC">0.00000000</div>
+                                <div class="currency-name">Bitcoin</div>
+                            </div>
+                            <div class="balance-card" style="background: linear-gradient(135deg, #e91e63 0%, #c2185b 100%);" onclick="editBalance('TRX')">
+                                <div class="currency-symbol">TRX</div>
+                                <div class="balance-amount" id="balance-TRX">0.00000000</div>
+                                <div class="currency-name">TRON</div>
+                            </div>
+                            <div class="balance-card" style="background: linear-gradient(135deg, #0088cc 0%, #006699 100%);" onclick="editBalance('TON')">
+                                <div class="currency-symbol">TON</div>
+                                <div class="balance-amount" id="balance-TON">0.00000000</div>
+                                <div class="currency-name">TON COIN</div>
+                            </div>
+                            <div class="balance-card" style="background: linear-gradient(135deg, #627eea 0%, #4a63c2 100%);" onclick="editBalance('ETH')">
+                                <div class="currency-symbol">ETH</div>
+                                <div class="balance-amount" id="balance-ETH">0.00000000</div>
+                                <div class="currency-name">Ethereum</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">⚡ Quick Actions</h2>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                            <button onclick="showSection('transactions')" class="btn btn-primary">Send Money</button>
+                            <button onclick="showSection('transactions')" class="btn btn-success">Receive Money</button>
+                            <button onclick="showSection('transactions')" class="btn btn-warning">Transfer Funds</button>
+                            <button onclick="showSection('crypto-wallets')" class="btn btn-primary" style="background: linear-gradient(135deg, #f7931a 0%, #c47500 100%);">Crypto Exchange</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transactions Section -->
+                <div id="transactions" class="section">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">💸 Send Money</h2>
+                        </div>
+                        <form id="sendMoneyForm">
+                            <div class="form-group">
+                                <label>Currency</label>
+                                <select id="sendCurrency" required>
+                                    <option value="USD">USD - US Dollar</option>
+                                    <option value="EUR">EUR - Euro</option>
+                                    <option value="GBP">GBP - British Pound</option>
+                                    <option value="CNY">CNY - Chinese Yuan</option>
+                                    <option value="NGN">NGN - Nigerian Naira</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Amount</label>
+                                <input type="number" id="sendAmount" required placeholder="Enter amount" step="0.01" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label>Recipient Account/Wallet</label>
+                                <input type="text" id="sendRecipient" required placeholder="Enter recipient account number or wallet address">
+                            </div>
+                            <div class="form-group">
+                                <label>Bank/Network</label>
+                                <select id="sendBank">
+                                    <option value="commercial">Commercial Bank</option>
+                                    <option value="microfinance">Microfinance Bank</option>
+                                    <option value="palmpay">Palmpay</option>
+                                    <option value="moniepoint">Moniepoint</option>
+                                    <option value="opay">Opay</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Send Money</button>
+                        </form>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">💰 Receive Money</h2>
+                        </div>
+                        <form id="receiveMoneyForm">
+                            <div class="form-group">
+                                <label>Currency</label>
+                                <select id="receiveCurrency" required>
+                                    <option value="USD">USD - US Dollar</option>
+                                    <option value="EUR">EUR - Euro</option>
+                                    <option value="GBP">GBP - British Pound</option>
+                                    <option value="CNY">CNY - Chinese Yuan</option>
+                                    <option value="NGN">NGN - Nigerian Naira</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Amount</label>
+                                <input type="number" id="receiveAmount" required placeholder="Enter amount to receive" step="0.01" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label>Sender Name/Account</label>
+                                <input type="text" id="receiveSender" required placeholder="Enter sender name or account">
+                            </div>
+                            <button type="submit" class="btn btn-success">Receive Money</button>
+                        </form>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">↔️ Transfer Between Accounts</h2>
+                        </div>
+                        <form id="transferForm">
+                            <div class="form-group">
+                                <label>From Currency</label>
+                                <select id="transferFrom" required>
+                                    <option value="USD">USD - US Dollar</option>
+                                    <option value="EUR">EUR - Euro</option>
+                                    <option value="GBP">GBP - British Pound</option>
+                                    <option value="CNY">CNY - Chinese Yuan</option>
+                                    <option value="NGN">NGN - Nigerian Naira</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>To Currency</label>
+                                <select id="transferTo" required>
+                                    <option value="EUR">EUR - Euro</option>
+                                    <option value="GBP">GBP - British Pound</option>
+                                    <option value="CNY">CNY - Chinese Yuan</option>
+                                    <option value="NGN">NGN - Nigerian Naira</option>
+                                    <option value="USD">USD - US Dollar</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Amount</label>
+                                <input type="number" id="transferAmount" required placeholder="Enter amount to transfer" step="0.01" min="0">
+                            </div>
+                            <button type="submit" class="btn btn-warning">Transfer & Convert</button>
+                        </form>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">📋 Transaction History</h2>
+                        </div>
+                        <div style="overflow-x: auto;">
+                            <table id="transactionHistory">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Type</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="4" style="text-align: center;">No transactions yet</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">🌍 International Transfer (SWIFT)</h2>
+                        </div>
+                        <form>
+                            <div class="form-group">
+                                <label>SWIFT Code</label>
+                                <input type="text" placeholder="Enter SWIFT code" required>
+                            </div>
+                            <div class="form-group">
+                                <label>IBAN/Account Number</label>
+                                <input type="text" placeholder="Enter IBAN or account number" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Bank Name</label>
+                                <input type="text" placeholder="Enter bank name" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Country</label>
+                                <input type="text" placeholder="Enter country" required>
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="showNotification('International transfer initiated', 'success')">Send International Transfer</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Crypto Wallets Section -->
+                <div id="crypto-wallets" class="section">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">💼 Create New Wallet</h2>
+                        </div>
+                        <div class="form-group">
+                            <label>Select Cryptocurrency</label>
+                            <select id="walletCurrency">
+                                <option value="BTC">Bitcoin (BTC)</option>
+                                <option value="TRX">TRON (TRX)</option>
+                                <option value="TON">TON COIN (TON)</option>
+                                <option value="ETH">Ethereum (ETH)</option>
+                            </select>
+                        </div>
+                        <button id="createWalletBtn" class="btn btn-primary">Generate New Wallet Address</button>
+                        <div id="newWalletAddress" class="wallet-address hidden" style="margin-top: 20px;"></div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">📤 Send Crypto</h2>
+                        </div>
+                        <form id="sendCryptoForm">
+                            <div class="form-group">
+                                <label>Cryptocurrency</label>
+                                <select id="cryptoSendCurrency" required>
+                                    <option value="BTC">Bitcoin (BTC)</option>
+                                    <option value="TRX">TRON (TRX)</option>
+                                    <option value="TON">TON COIN (TON)</option>
+                                    <option value="ETH">Ethereum (ETH)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Amount</label>
+                                <input type="number" id="cryptoSendAmount" required placeholder="Enter amount" step="0.00000001" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label>Recipient Wallet Address</label>
+                                <input type="text" id="cryptoSendAddress" required placeholder="Enter blockchain wallet address">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Send Crypto</button>
+                        </form>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">👛 Your Wallets</h2>
+                        </div>
+                        <div id="walletList">
+                            <p style="text-align: center; color: #64748b;">No wallets created yet</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">🔗 Blockchain Integration</h2>
+                        </div>
+                        <div class="address-generator">
+                            <h3>Auto-Generated Addresses: <span id="addressCount">0</span></h3>
+                            <p>System automatically generates 10 blockchain addresses every second for mining operations.</p>
+                            <div class="mining-stats">
+                                <div class="stat-item">
+                                    <div class="stat-value" id="balance-BTC-display">0.00000000</div>
+                                    <div class="stat-label">BTC Balance</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="balance-TRX-display">0.00000000</div>
+                                    <div class="stat-label">TRX Balance</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="balance-TON-display">0.00000000</div>
+                                    <div class="stat-label">TON Balance</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="balance-ETH-display">0.00000000</div>
+                                    <div class="stat-label">ETH Balance</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mining Section -->
+                <div id="mining" class="section">
+                    <div class="mining-section">
+                        <h2>⛏️ Currency Mining</h2>
+                        <p>Automatically mines 1000 units of each currency every hour</p>
+                        
+                        <div class="mining-stats">
+                            <div class="stat-item">
+                                <div class="stat-label">USD Mining</div>
+                                <div class="mining-progress">
+                                    <div id="mining-progress-USD" class="mining-bar" style="width: 0%">0%</div>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">EUR Mining</div>
+                                <div class="mining-progress">
+                                    <div id="mining-progress-EUR" class="mining-bar" style="width: 0%">0%</div>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">GBP Mining</div>
+                                <div class="mining-progress">
+                                    <div id="mining-progress-GBP" class="mining-bar" style="width: 0%">0%</div>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">CNY Mining</div>
+                                <div class="mining-progress">
+                                    <div id="mining-progress-CNY" class="mining-bar" style="width: 0%">0%</div>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">NGN Mining</div>
+                                <div class="mining-progress">
+                                    <div id="mining-progress-NGN" class="mining-bar" style="width: 0%">0%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mining-section" style="background: linear-gradient(135deg, #f7931a 0%, #c47500 100%);">
+                        <h2>₿ Crypto Mining</h2>
+                        <p>Automatically mines 1 BTC and 100 units of other cryptocurrencies every hour</p>
+                        
+                        <div class="mining-stats">
+                            <div class="stat-item">
+                                <div class="stat-label">BTC Mining</div>
+                                <div class="mining-progress">
+                                    <div id="crypto-mining-progress-BTC" class="mining-bar" style="width: 0%">0%</div>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">TRX Mining</div>
+                                <div class="mining-progress">
+                                    <div id="crypto-mining-progress-TRX" class="mining-bar" style="width: 0%">0%</div>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">TON Mining</div>
+                                <div class="mining-progress">
+                                    <div id="crypto-mining-progress-TON" class="mining-bar" style="width: 0%">0%</div>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">ETH Mining</div>
+                                <div class="mining-progress">
+                                    <div id="crypto-mining-progress-ETH" class="mining-bar" style="width: 0%">0%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">🔄 Auto-Transfer Settings</h2>
+                        </div>
+                        <p>When mining completes, funds are automatically transferred to your main balance and mining restarts.</p>
+                        <div class="mining-stats">
+                            <div class="stat-item">
+                                <div class="stat-value" id="totalMinedUSD">$0.00</div>
+                                <div class="stat-label">Total USD Mined</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="totalMinedBTC">0 BTC</div>
+                                <div class="stat-label">Total BTC Mined</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trading Section -->
+                <div id="trading" class="section">
+                    <div class="trading-robot">
+                        <h2>🤖 Auto Trading Robot</h2>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0;">
+                            <div>
+                                <p>Robot Status: <span id="robotStatus" class="badge bg-danger">Inactive</span></p>
+                                <p>Capital: <span id="tradingCapital">$0.00</span></p>
+                                <p>Profit: <span id="tradingProfit">$0.00</span></p>
+                            </div>
+                            <button id="toggleRobotBtn" class="btn btn-success">Activate Robot</button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">📊 Crypto Trading</h2>
+                        </div>
+                        <div class="form-group">
+                            <label>Trading Pair</label>
+                            <select>
+                                <option>BTC/USD</option>
+                                <option>ETH/USD</option>
+                                <option>TRX/USD</option>
+                                <option>TON/USD</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Order Type</label>
+                            <select>
+                                <option>Buy</option>
+                                <option>Sell</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Amount (USD)</label>
+                            <input type="number" placeholder="Enter amount in USD">
+                        </div>
+                        <button class="btn btn-primary">Place Order</button>
+                    </div>
+
+                    <div class="profit-section">
+                        <h3>💰 Profit Management</h3>
+                        <p>Trading robot automatically separates profits and continues trading with capital.</p>
+                        <div class="mining-stats">
+                            <div class="stat-item">
+                                <div class="stat-value" style="color: #10b981;">+$0.00</div>
+                                <div class="stat-label">Total Profit</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">$0.00</div>
+                                <div class="stat-label">Active Capital</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-success" onclick="showNotification('Profits withdrawn to main balance', 'success')">Withdraw Profits</button>
+                    </div>
+                </div>
+
+                <!-- Profile Section -->
+                <div id="profile" class="section">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">👤 User Profile</h2>
+                        </div>
+                        <div style="display: flex; gap: 30px; align-items: flex-start;">
+                            <div style="flex-shrink: 0;">
+                                <img id="profileAvatar" src="" alt="Profile" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 4px solid var(--primary-color);">
+                                <div style="margin-top: 15px;">
+                                    <button class="btn btn-primary" style="width: 100%;">Change Photo</button>
+                                </div>
+                            </div>
+                            <div style="flex-grow: 1;">
+                                <form>
+                                    <div class="form-group">
+                                        <label>Full Name</label>
+                                        <input type="text" id="profileName" placeholder="Enter your full name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Date of Birth</label>
+                                        <input type="date" id="profileDob">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Sex</label>
+                                        <select id="profileSex">
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Country</label>
+                                        <input type="text" id="profileCountry" placeholder="Enter your country">
+                                    </div>
+                                    <button type="button" class="btn btn-primary" onclick="showNotification('Profile updated successfully', 'success')">Update Profile</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">🔔 Notification Settings</h2>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" checked> SMS Alerts for Transactions
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" checked> Email Alerts for Transactions
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" checked> Mining Completion Alerts
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" checked> Trading Robot Alerts
+                            </label>
+                        </div>
+                        <button class="btn btn-primary">Save Notification Settings</button>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">🔗 Integrations</h2>
+                        </div>
+                        <div class="form-group">
+                            <label>GitHub Repository</label>
+                            <input type="text" placeholder="Enter GitHub repo URL">
+                        </div>
+                        <div class="form-group">
+                            <label>API Key</label>
+                            <input type="text" placeholder="Enter your API key">
+                        </div>
+                        <button class="btn btn-primary">Connect Integrations</button>
+                    </div>
+                </div>
+
+                <!-- Admin Section -->
+                <div id="admin" class="section">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">🔧 Admin Panel</h2>
+                        </div>
+                        <p>Welcome to the admin control panel. Manage users, transactions, and system settings.</p>
+                        
+                        <div class="mining-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">0</div>
+                                <div class="stat-label">Total Users</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">0</div>
+                                <div class="stat-label">Total Transactions</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">$0.00</div>
+                                <div class="stat-label">System Volume</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">🛡️ Security Settings</h2>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" checked> Enable SSL/HTTPS
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" checked> Two-Factor Authentication
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox"> Maintenance Mode
+                            </label>
+                        </div>
+                        <button class="btn btn-warning">Update Security Settings</button>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">🌐 Domain & Hosting</h2>
+                        </div>
+                        <div class="form-group">
+                            <label>Domain Name</label>
+                            <input type="text" placeholder="Enter domain name">
+                        </div>
+                        <div class="form-group">
+                            <label>Hosting Provider</label>
+                            <select>
+                                <option>GitHub Pages</option>
+                                <option>Google Cloud</option>
+                                <option>AWS</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary">Configure Domain</button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
